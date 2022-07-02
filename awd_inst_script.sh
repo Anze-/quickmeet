@@ -7,7 +7,10 @@
 #     command: 'node {INSTALL_PATH}/quickmeet/server.js'
 # requirements:
 #     disk: 50
-# form:
+
+
+#currently form options are disabled!
+## form:
 #     language:
 #         type: choices
 #         label:
