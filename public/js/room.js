@@ -163,37 +163,55 @@ let videoTrackSent = {};
 
 let mystream, myscreenshare;
 
-
 document.querySelector('.roomcode').innerHTML = `${roomid}`
 
-function CopyClassText() {
+//Copy to clipboard is from: https://stackoverflow.com/a/30810322/2432618
+function fallbackCopyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
 
-    var textToCopy = document.querySelector('.roomcode');
-    var currentRange;
-    if (document.getSelection().rangeCount > 0) {
-        currentRange = document.getSelection().getRangeAt(0);
-        window.getSelection().removeRange(currentRange);
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
     }
-    else {
-        currentRange = false;
-    }
 
-    var CopyRange = document.createRange();
-    CopyRange.selectNode(textToCopy);
-    window.getSelection().addRange(CopyRange);
-    document.execCommand("copy");
-
-    window.getSelection().removeRange(CopyRange);
-
-    if (currentRange) {
-        window.getSelection().addRange(currentRange);
-    }
-
-    document.querySelector(".copycode-button").textContent = "Copied!"
-    setTimeout(()=>{
-        document.querySelector(".copycode-button").textContent = "Copy Code";
-    }, 5000);
+    document.body.removeChild(textArea);
 }
+function copyTextToClipboard(text) {
+    if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function () {
+        console.log('Async: Copying to clipboard was successful!');
+    }, function (err) {
+        console.error('Async: Could not copy text: ', err);
+    });
+}
+
+var copyRoomLink = document.querySelector('.copycode-button');
+
+copyRoomLink.addEventListener('click', function (event) {
+    copyTextToClipboard(window.location.origin.concat("/").concat(`${roomid}`));
+    var btn_text = copyRoomLink.textContent;
+    copyRoomLink.textContent = "Link copied!";
+    setTimeout(() => {
+        document.querySelector(".copycode-button").textContent = btn_text;
+    }, 1000);
+});
+
 
 
 continueButt.addEventListener('click', () => {
@@ -204,6 +222,7 @@ continueButt.addEventListener('click', () => {
     socket.emit("join room", roomid, username);
 
 })
+
 
 nameField.addEventListener("keyup", function (event) {
     if (event.keyCode === 13) {
@@ -434,16 +453,16 @@ function screenShareToggle() {
             }
             myscreenshare.getVideoTracks()[0].enabled = true;
             const newStream = new MediaStream([
-                myscreenshare.getVideoTracks()[0], 
+                myscreenshare.getVideoTracks()[0],
             ]);
             myvideo.srcObject = newStream;
             myvideo.muted = true;
             mystream = newStream;
-            screenShareButt.innerHTML = (screenshareEnabled 
+            screenShareButt.innerHTML = (screenshareEnabled
                 ? `<i class="fas fa-desktop"></i><span class="tooltiptext">Stop Share Screen</span>`
                 : `<i class="fas fa-desktop"></i><span class="tooltiptext">Share Screen</span>`
             );
-            myscreenshare.getVideoTracks()[0].onended = function() {
+            myscreenshare.getVideoTracks()[0].onended = function () {
                 if (screenshareEnabled) screenShareToggle();
             };
         })
@@ -602,7 +621,7 @@ socket.on('message', (msg, sendername, time) => {
 </div>`
 });
 
-videoButt.addEventListener('click', () => {
+function toggleVideo() {
 
     if (videoAllowed) {
         for (let key in videoTrackSent) {
@@ -643,10 +662,11 @@ videoButt.addEventListener('click', () => {
 
         socket.emit('action', 'videoon');
     }
-})
+}
 
+videoButt.addEventListener('click', toggleVideo);
 
-audioButt.addEventListener('click', () => {
+function toggleAudio() {
 
     if (audioAllowed) {
         for (let key in audioTrackSent) {
@@ -684,7 +704,10 @@ audioButt.addEventListener('click', () => {
 
         socket.emit('action', 'unmute');
     }
-})
+}
+
+audioButt.addEventListener('click', toggleAudio)
+
 
 socket.on('action', (msg, sid) => {
     if (msg == 'mute') {
@@ -709,7 +732,7 @@ socket.on('action', (msg, sid) => {
     }
 })
 
-whiteboardButt.addEventListener('click', () => {
+function toggleWhiteboard() {
     if (boardVisisble) {
         whiteboardCont.style.visibility = 'hidden';
         boardVisisble = false;
@@ -718,7 +741,30 @@ whiteboardButt.addEventListener('click', () => {
         whiteboardCont.style.visibility = 'visible';
         boardVisisble = true;
     }
-})
+}
+
+whiteboardButt.addEventListener('click', toggleWhiteboard)
+
+// Add button controls for the call, only while user is not writing!
+window.addEventListener("keypress", function onPress(event) {
+    var txt_inputs = document.getElementsByTagName("input");
+    var writing = false;
+    for (let input of txt_inputs) {
+        if (input === document.activeElement) { writing = true; break; }
+    }
+    if (event.key === 'v' && !writing) {
+        toggleVideo();
+    }
+    if (event.key === 'm' && !writing) {
+        toggleAudio();
+    }
+    if (event.key === 'b' && !writing) {
+        toggleWhiteboard();
+    }
+    if (event.key === 's' && !writing) {
+        screenShareToggle();
+    }
+});
 
 cutCall.addEventListener('click', () => {
     location.href = '/';

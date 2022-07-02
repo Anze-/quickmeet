@@ -17,7 +17,6 @@ A video chat/meeting webapp using WebRTC and WebSockets (socket.io). Basically a
 ## ToDo:
 
 1. add a simple password protection to limit the service to the desired user base
-2. add a different api route for the rooms, so the links are going to look like: example.com/my-room-code
 
 ## Upcoming Features?
 
@@ -26,3 +25,12 @@ A video chat/meeting webapp using WebRTC and WebSockets (socket.io). Basically a
 ## Contributions?
 
 Feel free to make a PR.
+
+
+## Changelog (last 10)
+
+- added key controls for the call
+- added copy of the share link
+- added shortlink to example.com/room-code
+- improved naming
+- added install script for alwaysdata

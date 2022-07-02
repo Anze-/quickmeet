@@ -3,6 +3,8 @@ const express = require('express')
 const http = require('http')
 const moment = require('moment');
 const socketio = require('socket.io');
+const request = require('request')
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -11,6 +13,12 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// make it possible to use example.com/room-code to link to the room
+app.get('*', (req, res) => {
+    res.redirect("/room.html?room=".concat(req.originalUrl.substring(1)))
+})
+
 
 let rooms = {};
 let socketroom = {};
