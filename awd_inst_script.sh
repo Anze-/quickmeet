@@ -47,4 +47,4 @@ npm audit fix
 # application name: Quickmeet
 # application URL: https://github.com/Anze-/quickmeet/
 # author name:  i-aryan
-# author contact: aryanv2001@gmail.com
+# author contact: mailto:aryanv2001@gmail.com
