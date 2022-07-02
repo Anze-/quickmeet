@@ -42,3 +42,9 @@ git clone https://github.com/Anze-/quickmeet
 cd quickmeet
 npm install
 npm audit fix
+
+
+# application name: Quickmeet
+# application URL: https://github.com/Anze-/quickmeet/
+# author name:  i-aryan
+# author contact: aryanv2001@gmail.com
