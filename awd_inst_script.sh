@@ -50,3 +50,4 @@ npm audit fix
 # application URL: https://github.com/Anze-/quickmeet/
 # author name:  i-aryan
 # author contact: mailto:aryanv2001@gmail.com
+# URI source of the installation script: https://github.com/Anze-/quickmeet/awd_inst_script.sh
