@@ -5,8 +5,6 @@
 #     working_directory: '{INSTALL_PATH_RELATIVE}'
 #     nodejs_version: '14.19.2'
 #     command: 'node quickmeet/server.js'
-# database:
-#     type: none
 # requirements:
 #     disk: 50
 # form:
