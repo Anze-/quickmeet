@@ -5,6 +5,7 @@
 #     working_directory: '{INSTALL_PATH}'
 #     nodejs_version: '14.19.2'
 #     command: 'node {INSTALL_PATH}/quickmeet/server.js'
+#     environment: 'AUTH=true AUTH_USER=user AUTH_PASS=letsmeet'
 # requirements:
 #     disk: 50
 

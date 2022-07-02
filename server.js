@@ -5,12 +5,25 @@ const moment = require('moment');
 const socketio = require('socket.io');
 const request = require('request')
 
+const basicAuth = require('express-basic-auth')
+
+
 const PORT = process.env.PORT || 3000;
+const AUTH = process.env.AUTH || false;
+const USER = process.env.AUTH_USER || "user";
+const PASS = process.env.AUTH_PASS || "letsmeet";
 
 const app = express();
 const server = http.createServer(app);
 
 const io = socketio(server);
+
+if (AUTH) {
+    app.use(basicAuth({
+        challenge: true,
+        users: { USER: PASS }
+    }))
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
