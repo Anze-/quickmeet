@@ -10,8 +10,8 @@ const basicAuth = require('express-basic-auth')
 
 const PORT = process.env.PORT || 3000;
 const AUTH = process.env.AUTH || false;
-const USER = process.env.AUTH_USER || "user";
-const PASS = process.env.AUTH_PASS || "letsmeet";
+const AUTH_USER = process.env.AUTH_USER || "user";
+const AUTH_PASS = process.env.AUTH_PASS || "letsmeet";
 
 const app = express();
 const server = http.createServer(app);
@@ -21,7 +21,9 @@ const io = socketio(server);
 if (AUTH) {
     app.use(basicAuth({
         challenge: true,
-        users: { USER: PASS }
+        users: {
+            [AUTH_USER]: AUTH_PASS
+        }
     }))
 }
 
