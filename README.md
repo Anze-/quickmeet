@@ -16,8 +16,6 @@ A video chat/meeting webapp using WebRTC and WebSockets (socket.io). Basically a
 
 ## ToDo:
 
-1. add a simple password protection to limit the service to the desired user base
-
 ## Upcoming Features?
 
 2. Responsive front-end for Rooms
@@ -26,9 +24,20 @@ A video chat/meeting webapp using WebRTC and WebSockets (socket.io). Basically a
 
 Feel free to make a PR.
 
+## Install options:
+
+change the default config through these environment variables:
+```
+PORT = 3000
+AUTH = false
+AUTH_USER =  user
+AUTH_PASS = letsmeet
+```
+
 
 ## Changelog (last 10)
 
+- added simple optional password protection to limit the service to the desired user base
 - added key controls for the call
 - added copy of the share link
 - added shortlink to example.com/room-code
