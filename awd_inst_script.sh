@@ -2,9 +2,9 @@
 
 # site:
 #     type: 'nodejs'
-#     working_directory: '{INSTALL_PATH_RELATIVE}'
+#     working_directory: '{INSTALL_PATH}'
 #     nodejs_version: '14.19.2'
-#     command: 'node quickmeet/server.js'
+#     command: 'node {INSTALL_PATH}/quickmeet/server.js'
 # requirements:
 #     disk: 50
 # form:
